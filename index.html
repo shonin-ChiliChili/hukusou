@@ -219,32 +219,56 @@
             font-size: 0.85em;
         }
 
-        /* =========================================
-           ここからスマホ向けのレスポンシブ対応（追加部分）
+/* =========================================
+           ここからスマホ向けのレスポンシブ対応（横2列キープ版）
            ========================================= */
         @media screen and (max-width: 500px) {
-            /* スマホでは1列表示にして、テキストが潰れないようにする */
+            /* 横2列をキープしつつ、隙間を少し狭くしてスペースを確保 */
             .character-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 5px;
             }
-            /* カードの余白を少し広げる */
+            /* カード内の配置を「縦積み（上:アイコン、下:リスト）」に変更 */
             .char-card {
-                padding: 10px;
-                gap: 10px;
+                flex-direction: column;
+                align-items: center;
+                padding: 6px;
+                gap: 6px;
             }
-            /* タップしやすいように文字と余白を大きくする */
-            .costume-item {
-                font-size: 13px;
-                padding: 8px;
+            /* アイコン周りを少し縮小してスペース節約 */
+            .char-left {
+                width: 100%;
+                align-items: center;
             }
-            /* チェックボックスをスマホ用に押しやすく大きくする */
-            .costume-item input[type="checkbox"] {
-                transform: scale(1.3);
-                margin-right: 8px;
+            .icon-wrapper {
+                width: 60px;
+                height: 60px;
             }
-            /* キャラ名も見やすく */
+            .char-icon {
+                width: 60px;
+                height: 60px;
+            }
             .char-name-label {
-                font-size: 12px;
+                font-size: 11px;
+            }
+            /* チェックリストエリアをカードの横幅いっぱいに広げる */
+            .char-right {
+                width: 100%;
+            }
+            /* スマホでも押しやすいように調整しつつ、長い文字は折り返す */
+            .costume-item {
+                font-size: 11px;
+                padding: 6px 4px;
+            }
+            .costume-name {
+                white-space: normal; /* はみ出さずに改行させる */
+                word-break: break-word;
+                line-height: 1.2;
+            }
+            .costume-item input[type="checkbox"] {
+                transform: scale(1.1); /* チェックボックスを少しだけ拡大 */
+                margin-right: 4px;
+                flex-shrink: 0;
             }
         }
     </style>
