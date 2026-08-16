@@ -2,7 +2,6 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <!-- ズームを無効にし、スマホの画面幅に最適化する設定 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>服装報酬チェッカー</title>
     <style>
@@ -53,7 +52,7 @@
             color: #fff;
         }
 
-        /* 2列 キャラクターグリッド (基本はPC向けの2列) */
+        /* 2列 キャラクターグリッド */
         .character-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -94,6 +93,7 @@
             height: 75px;
             border-radius: 50%;
             object-fit: cover;
+            /* 画像の上の顔部分に寄せる設定 */
             object-position: center top;
             border: 2px solid #d4af37;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -122,6 +122,14 @@
             margin-top: 4px;
             line-height: 1.2;
             word-break: break-all;
+        }
+        .char-stats {
+            font-size: 10px;
+            color: #d4af37;
+            background: #3e312a;
+            padding: 1px 6px;
+            border-radius: 8px;
+            margin-top: 2px;
         }
 
         /* 右側：服装チェックリスト */
@@ -159,8 +167,13 @@
             flex-grow: 1;
             color: #444;
         }
+        .no-costume {
+            font-size: 10px;
+            color: #aaa;
+            padding-top: 10px;
+        }
 
-        /* ハイライトなどの状態スタイル */
+        /* 状態別スタイル */
         .char-card.dimmed {
             filter: grayscale(100%);
             opacity: 0.35;
@@ -169,13 +182,6 @@
             border: 2px solid #e67e22;
             background: #fffdf5;
             box-shadow: 0 0 8px rgba(230, 126, 34, 0.6);
-        }
-        .costume-item.highlight-costume {
-            background-color: #fff9e6;
-            border: 1px solid #ffc107;
-            box-shadow: 0 0 6px rgba(255, 193, 7, 0.6);
-            color: #d35400;
-            font-weight: bold;
         }
 
         /* 下部ボタン・結果エリア */
@@ -219,57 +225,15 @@
             font-size: 0.85em;
         }
 
-/* =========================================
-           ここからスマホ向けのレスポンシブ対応（横2列キープ版）
-           ========================================= */
-        @media screen and (max-width: 500px) {
-            /* 横2列をキープしつつ、隙間を少し狭くしてスペースを確保 */
-            .character-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 5px;
-            }
-            /* カード内の配置を「縦積み（上:アイコン、下:リスト）」に変更 */
-            .char-card {
-                flex-direction: column;
-                align-items: center;
-                padding: 6px;
-                gap: 6px;
-            }
-            /* アイコン周りを少し縮小してスペース節約 */
-            .char-left {
-                width: 100%;
-                align-items: center;
-            }
-            .icon-wrapper {
-                width: 60px;
-                height: 60px;
-            }
-            .char-icon {
-                width: 60px;
-                height: 60px;
-            }
-            .char-name-label {
-                font-size: 11px;
-            }
-            /* チェックリストエリアをカードの横幅いっぱいに広げる */
-            .char-right {
-                width: 100%;
-            }
-            /* スマホでも押しやすいように調整しつつ、長い文字は折り返す */
-            .costume-item {
-                font-size: 11px;
-                padding: 6px 4px;
-            }
-            .costume-name {
-                white-space: normal; /* はみ出さずに改行させる */
-                word-break: break-word;
-                line-height: 1.2;
-            }
-            .costume-item input[type="checkbox"] {
-                transform: scale(1.1); /* チェックボックスを少しだけ拡大 */
-                margin-right: 4px;
-                flex-shrink: 0;
-            }
+        /* ----------------------------------- */
+        /* 追加：あと1つの服装を強調表示するスタイル */
+        /* ----------------------------------- */
+        .costume-item.highlight-costume {
+            background-color: #fff9e6;
+            border: 1px solid #ffc107;
+            box-shadow: 0 0 6px rgba(255, 193, 7, 0.6);
+            color: #d35400;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -285,7 +249,7 @@
         <button class="tab-btn" onclick="filterType('家来', this)">家来</button>
     </div>
 
-    <!-- 2列キャラクターリスト（スマホ時は1列） -->
+    <!-- 2列キャラクターリスト -->
     <div class="character-grid" id="character-container"></div>
 
     <!-- 判定ボタン -->
@@ -420,6 +384,11 @@
         { id: "charマオ", name: "マオ", type: "家来", img: "img/家来/マオ.webp" },
         { id: "char大禹", name: "大禹", type: "家来", img: "img/家来/大禹.webp" },
         { id: "char小柒", name: "小柒", type: "家来", img: "img/家来/小柒.webp" },
+        { id: "char家来守真", name: "守真", type: "家来", img: "img/家来/守真.webp" },
+        { id: "char家来絢香", name: "絢香", type: "家来", img: "img/家来/絢香.webp" },
+        { id: "char家来青蓮", name: "青蓮", type: "家来", img: "img/家来/青蓮.webp" },
+        { id: "char家来玉京", name: "玉京", type: "家来", img: "img/家来/玉京.webp" },
+        { id: "char家来白姫", name: "白姫", type: "家来", img: "img/家来/白姫.webp" },
         { id: "char敖武", name: "敖武", type: "家来", img: "img/家来/敖武.webp" },
         { id: "char白月初", name: "白月初", type: "家来", img: "img/家来/白月初.webp" },
         { id: "char青叔宝・尉遅敬徳", name: "青叔宝・尉遅敬徳", type: "家来", img: "img/家来/青叔宝・尉遅敬徳.webp" },
@@ -517,7 +486,7 @@
         { id: "g30", name: "青玉案", thresholds: [2, 4, 5] },
 
         { id: "g31", name: "三台令", thresholds: [2, 4, 5] },
-        { id: "g32", name: "憶江南", thresholds: [2, 4, 5] },
+        { id: "g32", name: "憶江南", thresholds: [2, 4, 6] },
         { id: "g32", name: "白雪詞", thresholds: [2, 4, 5] },
         { id: "g34", name: "迎春賀正", thresholds: [2, 4, 5] },
         { id: "g35", name: "童年の記憶", thresholds: [2, 4, 5] },
@@ -549,7 +518,7 @@
         { id: "g59", name: "風池吟", thresholds: [2, 4, 5] },
         { id: "g60", name: "夢還京", thresholds: [2, 4, 5] },
 
-        { id: "g61", name: "風雲起こす", thresholds: [2, 4, 5] },
+        { id: "g61", name: "風雲起こす", thresholds: [2, 4, 6] },
         { id: "g62", name: "玉梅令", thresholds: [2, 4, 5] },
         { id: "g63", name: "水雲遊", thresholds: [2, 4, 5] },
         { id: "g64", name: "曲千秋", thresholds: [2, 4, 5] },
@@ -604,7 +573,7 @@
     const costumes = [
         { id: "c1", charId: "char物作り娘", groupId: "g1", name: "機械加工", owned: false },
         { id: "c2", charId: "char妹弟子", groupId: "g1", name: "江南の煙雨", owned: false },
-        { id: "c3", charId: "char玉京", groupId: "g1", name: "鵷雛降財", owned: false },
+        { id: "c3", charId: "char家来玉京", groupId: "g1", name: "鵷雛降財", owned: false },
         { id: "c4", charId: "char花火師", groupId: "g1", name: "花火繚乱", owned: false },
         { id: "c5", charId: "char花火師", groupId: "g1", name: "壮士凌雲", owned: false },
         
@@ -621,7 +590,7 @@
 
         { id: "c15", charId: "char巫女", groupId: "g4", name: "黒闇武士", owned: false },
         { id: "c16", charId: "char宗沢", groupId: "g4", name: "死地酔郷", owned: false },
-        { id: "c17", charId: "char守真", groupId: "g4", name: "鸞鷲我欲", owned: false },
+        { id: "c17", charId: "char家来守真", groupId: "g4", name: "鸞鷲我欲", owned: false },
         { id: "c18", charId: "char呂布", groupId: "g4", name: "白起", owned: false },
         { id: "c19", charId: "char捕吏", groupId: "g4", name: "行射の美", owned: false },
                 
@@ -637,7 +606,7 @@
         { id: "c28", charId: "char杜康", groupId: "g6", name: "醸造宗師", owned: false },
                 
         { id: "c29", charId: "char調馬師", groupId: "g7", name: "駿馬と恋心", owned: false },
-        { id: "c30", charId: "char絢香", groupId: "g7", name: "鳳舞九天", owned: false },
+        { id: "c30", charId: "char家来絢香", groupId: "g7", name: "鳳舞九天", owned: false },
         { id: "c31", charId: "char焼き芋娘", groupId: "g7", name: "甘香馥郁", owned: false },
                 
         { id: "c32", charId: "char雪山の少女", groupId: "g8", name: "氷原の衣", owned: false },
@@ -650,7 +619,7 @@
         { id: "c38", charId: "char怪盗", groupId: "g9", name: "墓の悲鳴", owned: false },
         { id: "c39", charId: "char捕吏", groupId: "g9", name: "龍騰虎闘", owned: false },
         { id: "c40", charId: "char魯班", groupId: "g9", name: "一心不乱", owned: false },
-        { id: "c41", charId: "char白姫", groupId: "g9", name: "鴻鵠飛翔", owned: false },
+        { id: "c41", charId: "char家来白姫", groupId: "g9", name: "鴻鵠飛翔", owned: false },
                 
         { id: "c42", charId: "char華道家", groupId: "g10", name: "解語の花", owned: false },
         { id: "c43", charId: "char孫臏", groupId: "g10", name: "本領発揮", owned: false },
@@ -663,7 +632,7 @@
         { id: "c49", charId: "char華道家", groupId: "g11", name: "桜の誓い", owned: false },
         { id: "c50", charId: "char胡蝶", groupId: "g11", name: "陌枝新露", owned: false },
                 
-        { id: "c51", charId: "char青蓮", groupId: "g12", name: "青鸞御風", owned: false },
+        { id: "c51", charId: "char家来青蓮", groupId: "g12", name: "青鸞御風", owned: false },
         { id: "c52", charId: "char侍女", groupId: "g12", name: "子猫探し", owned: false },
         { id: "c53", charId: "char陳肉屋", groupId: "g12", name: "無学無識", owned: false },
         { id: "c54", charId: "char王農家", groupId: "g12", name: "豊年満作", owned: false },
@@ -759,11 +728,11 @@
         { id: "c128", charId: "char瓢箪仙人", groupId: "g28", name: "陽焱", owned: false },
         { id: "c129", charId: "char瓢箪仙人", groupId: "g28", name: "金雷", owned: false },
                 
-        { id: "c130", charId: "char白姫", groupId: "g29", name: "寒梅屹立", owned: false },
-        { id: "c131", charId: "char守真", groupId: "g29", name: "空谷幽蘭", owned: false },
-        { id: "c132", charId: "char玉京", groupId: "g29", name: "凌霜秋菊", owned: false },
-        { id: "c133", charId: "char青蓮", groupId: "g29", name: "青蓮艶糸", owned: false },
-        { id: "c134", charId: "char絢香", groupId: "g29", name: "桃花酔臥", owned: false },
+        { id: "c130", charId: "char家来白姫", groupId: "g29", name: "寒梅屹立", owned: false },
+        { id: "c131", charId: "char家来守真", groupId: "g29", name: "空谷幽蘭", owned: false },
+        { id: "c132", charId: "char家来玉京", groupId: "g29", name: "凌霜秋菊", owned: false },
+        { id: "c133", charId: "char家来青蓮", groupId: "g29", name: "青蓮艶糸", owned: false },
+        { id: "c134", charId: "char家来絢香", groupId: "g29", name: "桃花酔臥", owned: false },
                 
         { id: "c135", charId: "char妹弟子", groupId: "g30", name: "剣魄琴心", owned: false },
         { id: "c136", charId: "char呉福矢", groupId: "g30", name: "雪人の衣", owned: false },
@@ -861,11 +830,11 @@
         { id: "c213", charId: "char蘇武", groupId: "g45", name: "北海牧歌", owned: false },
         { id: "c214", charId: "char沈万三", groupId: "g45", name: "呉剛", owned: false },
                 
-        { id: "c215", charId: "char青蓮", groupId: "g46", name: "夢余の琴音", owned: false },
-        { id: "c216", charId: "char絢香", groupId: "g46", name: "傾心の舞", owned: false },
-        { id: "c217", charId: "char玉京", groupId: "g46", name: "碧玉の歌声", owned: false },
-        { id: "c218", charId: "char守真", groupId: "g46", name: "如火の弦音", owned: false },
-        { id: "c219", charId: "char白姫", groupId: "g46", name: "至極の妙声", owned: false },
+        { id: "c215", charId: "char家来青蓮", groupId: "g46", name: "夢余の琴音", owned: false },
+        { id: "c216", charId: "char家来絢香", groupId: "g46", name: "傾心の舞", owned: false },
+        { id: "c217", charId: "char家来玉京", groupId: "g46", name: "碧玉の歌声", owned: false },
+        { id: "c218", charId: "char家来守真", groupId: "g46", name: "如火の弦音", owned: false },
+        { id: "c219", charId: "char家来白姫", groupId: "g46", name: "至極の妙声", owned: false },
                 
         { id: "c220", charId: "char江小魚", groupId: "g47", name: "五絶神功", owned: false },
         { id: "c221", charId: "char花無闕", groupId: "g47", name: "才能発揮", owned: false },
@@ -922,11 +891,11 @@
         { id: "c263", charId: "char呉福矢", groupId: "g56", name: "荷衣蕙帯", owned: false },
         { id: "c264", charId: "char市船使", groupId: "g56", name: "気力全開", owned: false },
                 
-        { id: "c265", charId: "char絢香", groupId: "g57", name: "曽侯乙編鐘", owned: false },
-        { id: "c266", charId: "char守真", groupId: "g57", name: "睡虎地秦簡", owned: false },
-        { id: "c267", charId: "char白姫", groupId: "g57", name: "越王匂践剣", owned: false },
-        { id: "c268", charId: "char青蓮", groupId: "g57", name: "千里江山図", owned: false },
-        { id: "c269", charId: "char玉京", groupId: "g57", name: "長信宮灯", owned: false },
+        { id: "c265", charId: "char家来絢香", groupId: "g57", name: "曽侯乙編鐘", owned: false },
+        { id: "c266", charId: "char家来守真", groupId: "g57", name: "睡虎地秦簡", owned: false },
+        { id: "c267", charId: "char家来白姫", groupId: "g57", name: "越王匂践剣", owned: false },
+        { id: "c268", charId: "char家来青蓮", groupId: "g57", name: "千里江山図", owned: false },
+        { id: "c269", charId: "char家来玉京", groupId: "g57", name: "長信宮灯", owned: false },
 
         { id: "c270", charId: "char青蓮", groupId: "g58", name: "夢余の琴音", owned: false },
         { id: "c271", charId: "char絢香", groupId: "g58", name: "傾心の舞", owned: false },
@@ -1061,11 +1030,11 @@
         { id: "c376", charId: "char市船使", groupId: "g83", name: "御海の龍王", owned: false },
         { id: "c377", charId: "char盗賊娘", groupId: "g83", name: "黄金の洞窟", owned: false },
         
-        { id: "c378", charId: "char白姫", groupId: "g84", name: "西岳華山", owned: false },
-        { id: "c379", charId: "char絢香", groupId: "g84", name: "中岳嵩山", owned: false },
-        { id: "c380", charId: "char青蓮", groupId: "g84", name: "北岳恒山", owned: false },
-        { id: "c381", charId: "char守真", groupId: "g84", name: "東岳泰山", owned: false },
-        { id: "c382", charId: "char玉京", groupId: "g84", name: "南岳衡山", owned: false },
+        { id: "c378", charId: "char家来白姫", groupId: "g84", name: "西岳華山", owned: false },
+        { id: "c379", charId: "char家来絢香", groupId: "g84", name: "中岳嵩山", owned: false },
+        { id: "c380", charId: "char家来青蓮", groupId: "g84", name: "北岳恒山", owned: false },
+        { id: "c381", charId: "char家来守真", groupId: "g84", name: "東岳泰山", owned: false },
+        { id: "c382", charId: "char家来玉京", groupId: "g84", name: "南岳衡山", owned: false },
         
         { id: "c383", charId: "char白姫", groupId: "g85", name: "西岳華山", owned: false },
         { id: "c384", charId: "char絢香", groupId: "g85", name: "中岳嵩山", owned: false },
