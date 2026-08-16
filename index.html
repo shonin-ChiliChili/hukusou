@@ -22,6 +22,8 @@
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 100%;
+            overflow: hidden; /* コンテナ外への溢れをカット */
         }
         h1 {
             text-align: center;
@@ -30,50 +32,12 @@
             margin: 8px 0;
         }
 
-        /* フィルタータブ：溢れた場合に折り返す設定を追加 */
+        /* フィルタータブ */
         .filter-tabs {
             display: flex;
             gap: 5px;
             margin-bottom: 10px;
-            flex-wrap: wrap; /* 追加 */
-        }
-
-        /* 画面幅が非常に狭い端末（スマホ）向け調整 */
-        @media (max-width: 480px) {
-            .container {
-                padding: 6px;
-            }
-            .character-grid {
-                gap: 6px;
-            }
-            .char-card {
-                padding: 4px;
-                gap: 4px;
-            }
-            
-            /* 左側アイコンエリアをスマホ用に少し縮小 */
-            .char-left {
-                width: 55px; /* 75px -> 55px に縮小 */
-            }
-            .icon-wrapper,
-            .char-icon {
-                width: 55px; /* 75px -> 55px に縮小 */
-                height: 55px;
-            }
-            .char-name-label {
-                font-size: 10px;
-            }
-            
-            /* 右側リストの折り返し調整 */
-            .costume-item {
-                padding: 2px 3px;
-                font-size: 10px;
-            }
-            .costume-name {
-                white-space: normal; /* 折り返しを許可してはみ出しを防止 */
-                word-break: break-all;
-                line-height: 1.1;
-            }
+            flex-wrap: wrap;
         }
         .tab-btn {
             flex: 1;
@@ -91,12 +55,13 @@
             color: #fff;
         }
 
-        /* 2列 キャラクターグリッド */
+        /* 2列 キャラクターグリッド（minmaxで要素の幅が潰れるように変更） */
         .character-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
             padding: 0;
+            width: 100%;
         }
 
         /* キャラクターカード */
@@ -104,35 +69,36 @@
             background: #fff;
             border: 1px solid #e0d8c8;
             border-radius: 6px;
-            padding: 6px;
+            padding: 5px;
             display: flex;
             flex-direction: row;
             align-items: flex-start;
-            gap: 6px;
+            gap: 5px;
             position: relative;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             transition: border-color 0.2s, filter 0.2s;
+            width: 100%;
+            min-width: 0; /* フレックス要素のはみ出し防止 */
         }
 
-        /* 左側：アイコンエリア */
+        /* 左側：アイコンエリア（サイズを縮小） */
         .char-left {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 75px;
+            width: 50px; /* 75px -> 50px に縮小 */
             flex-shrink: 0;
         }
         .icon-wrapper {
             position: relative;
-            width: 75px;
-            height: 75px;
+            width: 50px; /* 75px -> 50px に縮小 */
+            height: 50px;
         }
         .char-icon {
-            width: 75px;
-            height: 75px;
+            width: 50px; /* 75px -> 50px に縮小 */
+            height: 50px;
             border-radius: 50%;
             object-fit: cover;
-            /* 画像の上の顔部分に寄せる設定 */
             object-position: center top;
             border: 2px solid #d4af37;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -143,9 +109,9 @@
             position: absolute;
             top: -4px;
             left: -4px;
-            font-size: 9px;
-            padding: 1px 5px;
-            border-radius: 8px;
+            font-size: 8px;
+            padding: 1px 4px;
+            border-radius: 6px;
             color: #fff;
             font-weight: bold;
             z-index: 2;
@@ -154,27 +120,27 @@
         .type-kerai { background: #0984e3; }
 
         .char-name-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: #333;
             text-align: center;
-            margin-top: 4px;
-            line-height: 1.2;
+            margin-top: 2px;
+            line-height: 1.1;
             word-break: break-all;
         }
         .char-stats {
-            font-size: 10px;
+            font-size: 9px;
             color: #d4af37;
             background: #3e312a;
-            padding: 1px 6px;
-            border-radius: 8px;
+            padding: 1px 4px;
+            border-radius: 6px;
             margin-top: 2px;
         }
 
         /* 右側：服装チェックリスト */
         .char-right {
-            flex-grow: 1;
-            min-width: 0;
+            flex: 1;
+            min-width: 0; /* 文字列溢れを防ぐ */
         }
         .costume-sublist {
             list-style: none;
@@ -182,34 +148,65 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
         .costume-item {
             display: flex;
             align-items: center;
-            font-size: 11px;
+            font-size: 10px;
             background: #f8f9fa;
-            padding: 3px 4px;
+            padding: 2px 3px;
             border-radius: 3px;
             border: 1px solid #eee;
             cursor: pointer;
+            width: 100%;
         }
         .costume-item input[type="checkbox"] {
-            transform: scale(1.1);
-            margin-right: 4px;
+            transform: scale(0.9);
+            margin-right: 3px;
             cursor: pointer;
+            flex-shrink: 0;
         }
         .costume-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal; /* 自動折り返しを許可 */
+            word-break: break-all; /* 長い単語での崩れを防止 */
+            line-height: 1.1;
             flex-grow: 1;
             color: #444;
         }
         .no-costume {
-            font-size: 10px;
+            font-size: 9px;
             color: #aaa;
-            padding-top: 10px;
+            padding-top: 5px;
+        }
+
+        /* 画面幅が非常に狭い端末（スマホ）向け微調整 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 4px;
+            }
+            .character-grid {
+                gap: 4px;
+            }
+            .char-card {
+                padding: 3px;
+                gap: 3px;
+            }
+            .char-left {
+                width: 40px; /* さらに少しコンパクト化 */
+            }
+            .icon-wrapper,
+            .char-icon {
+                width: 40px;
+                height: 40px;
+            }
+            .char-name-label {
+                font-size: 9px;
+            }
+            .costume-item {
+                padding: 1px 2px;
+                font-size: 9px;
+            }
         }
 
         /* 状態別スタイル */
@@ -264,9 +261,6 @@
             font-size: 0.85em;
         }
 
-        /* ----------------------------------- */
-        /* 追加：あと1つの服装を強調表示するスタイル */
-        /* ----------------------------------- */
         .costume-item.highlight-costume {
             background-color: #fff9e6;
             border: 1px solid #ffc107;
