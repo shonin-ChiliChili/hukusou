@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>服装報酬チェッカー</title>
     <style>
         * {
@@ -30,11 +30,50 @@
             margin: 8px 0;
         }
 
-        /* フィルタータブ */
+        /* フィルタータブ：溢れた場合に折り返す設定を追加 */
         .filter-tabs {
             display: flex;
             gap: 5px;
             margin-bottom: 10px;
+            flex-wrap: wrap; /* 追加 */
+        }
+
+        /* 画面幅が非常に狭い端末（スマホ）向け調整 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 6px;
+            }
+            .character-grid {
+                gap: 6px;
+            }
+            .char-card {
+                padding: 4px;
+                gap: 4px;
+            }
+            
+            /* 左側アイコンエリアをスマホ用に少し縮小 */
+            .char-left {
+                width: 55px; /* 75px -> 55px に縮小 */
+            }
+            .icon-wrapper,
+            .char-icon {
+                width: 55px; /* 75px -> 55px に縮小 */
+                height: 55px;
+            }
+            .char-name-label {
+                font-size: 10px;
+            }
+            
+            /* 右側リストの折り返し調整 */
+            .costume-item {
+                padding: 2px 3px;
+                font-size: 10px;
+            }
+            .costume-name {
+                white-space: normal; /* 折り返しを許可してはみ出しを防止 */
+                word-break: break-all;
+                line-height: 1.1;
+            }
         }
         .tab-btn {
             flex: 1;
